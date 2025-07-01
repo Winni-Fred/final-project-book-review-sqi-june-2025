@@ -1,0 +1,91 @@
+{% extends "partials/base.html" %}
+
+{% block title %}
+Home
+{% endblock title %}
+
+{% block content %}
+<header class="hero">
+    <div class="hero-content">
+        <h1>Discover Your Next Great Read</h1>
+        <p>Join thousands of book lovers sharing their thoughts and discovering amazing books through authentic reviews.</p>
+        <div class="hero-buttons">
+            <a href="{% url 'review:book_list' %}" class="btn btn-primary">Browse Books</a>
+            <a href="register.html" class="btn btn-secondary">Join Community</a>
+        </div>
+    </div>
+    <div class="hero-image">
+        <div class="floating-books">
+            <div class="book book-1"></div>
+            <div class="book book-2"></div>
+            <div class="book book-3"></div>
+        </div>
+    </div>
+</header>
+
+<section class="features">
+    <div class="container">
+        <h2>Why Choose BookReview?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <h3>Honest Reviews</h3>
+                <p>Read authentic reviews from real readers to make informed decisions about your next book.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Active Community</h3>
+                <p>Connect with fellow book enthusiasts and discover books through community recommendations.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h3>Easy Discovery</h3>
+                <p>Find your perfect book with our intuitive search and filtering system.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="popular-books">
+    <div class="container">
+        <h2>Featured This Week</h2>
+        <div class="books-grid">
+        {% for book in featured %}
+            <div class="book-card">
+                <div class="book-cover">
+                {% if book.cover_image %}
+                    <img src="{{ book.cover_image.url }}" alt="{{ book.title }}">
+                {% else %}
+                <p>No Image for {{ book.title }}</p>
+                {% endif %}
+                </div>
+                <div class="book-info">
+                    <h3>{{ book.title }}</h3>
+                    <p class="author">{{ book.author }}</p>
+                    <p class="genre">{{ book.get_genre_display }}</p>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <span>{{ book.calculate_avg_rating }}</span>
+                        <span class="review-count">({{ book.review_set.count }} reviews)</span>
+                    </div>
+                    <a href="{% url 'review:book_detail' book.pk %}" class="btn btn-outline">Read Reviews</a>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+        <div class="text-center">
+            <a href="{% url 'review:book_list' %}" class="btn btn-primary">View All Books</a>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}
+
+
+
